@@ -1,0 +1,301 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Checkout — FIFTH NOTE
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .checkout-page {
+        max-width: 1000px;
+        width: 100%;
+        margin: 60px auto;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .checkout-page h1 {
+        font-size: 36px;
+        letter-spacing: 4px;
+        margin-bottom: 40px;
+    }
+
+    .checkout-box {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 35px;
+        align-items: start;
+    }
+
+    .order-summary,
+    .checkout-form {
+        background: white;
+        padding: 30px;
+        border: 1px solid #ddd;
+        min-width: 0;
+    }
+
+    .order-summary h2,
+    .checkout-form h2 {
+        margin-bottom: 25px;
+        font-size: 20px;
+        letter-spacing: 1px;
+    }
+
+    .order-item {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 18px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .order-item-info {
+        min-width: 0;
+    }
+
+    .order-item-info strong {
+        overflow-wrap: anywhere;
+    }
+
+    .order-item small {
+        display: block;
+        color: #777;
+        margin-top: 7px;
+        line-height: 1.7;
+    }
+
+    .order-size {
+        display: inline-block;
+        background: #f1f1ef;
+        padding: 5px 10px;
+        font-size: 11px;
+        letter-spacing: 1px;
+        margin-top: 8px;
+    }
+
+    .order-item > strong {
+        white-space: nowrap;
+    }
+
+    .order-total {
+        margin-top: 25px;
+        font-size: 22px;
+        font-weight: bold;
+        text-align: right;
+    }
+
+    .checkout-form label {
+        display: block;
+        margin-bottom: 7px;
+        font-size: 14px;
+    }
+
+    .checkout-form input,
+    .checkout-form textarea {
+        width: 100%;
+        padding: 13px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        font-size: 15px;
+        outline: none;
+        font-family: inherit;
+        box-sizing: border-box;
+    }
+
+    .checkout-form input:focus,
+    .checkout-form textarea:focus {
+        border-color: #111;
+    }
+
+    .checkout-form textarea {
+        height: 100px;
+        resize: vertical;
+    }
+
+    .place-order {
+        width: 100%;
+        padding: 16px;
+        background: #111;
+        color: white;
+        border: none;
+        cursor: pointer;
+        letter-spacing: 2px;
+        font-size: 13px;
+        transition: .3s;
+    }
+
+    .place-order:hover {
+        background: #333;
+    }
+
+    .checkout-note {
+        color: #777;
+        font-size: 12px;
+        margin-top: 15px;
+        line-height: 1.6;
+    }
+
+    @media (max-width: 700px) {
+        .checkout-page {
+            margin: 30px auto;
+            padding: 15px;
+        }
+
+        .checkout-page h1 {
+            font-size: 28px;
+            margin-bottom: 25px;
+        }
+
+        .checkout-box {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .order-summary,
+        .checkout-form {
+            padding: 22px;
+        }
+    }
+
+    @media (max-width: 380px) {
+        .checkout-page {
+            padding: 12px;
+        }
+
+        .checkout-page h1 {
+            font-size: 24px;
+        }
+
+        .order-summary,
+        .checkout-form {
+            padding: 17px;
+        }
+
+        .order-total {
+            font-size: 19px;
+        }
+    }
+</style>
+
+<div class="checkout-page">
+
+    <h1>CHECKOUT</h1>
+
+    <div class="checkout-box">
+
+        <!-- ORDER SUMMARY -->
+
+        <div class="order-summary">
+
+            <h2>YOUR ORDER</h2>
+
+            {% for item in perfumes %}
+
+            <div class="order-item">
+
+                <div class="order-item-info">
+
+                    <strong>
+                        {{ item.perfume.name }}
+                    </strong>
+
+                    <br>
+
+                    <span class="order-size">
+                        {{ item.size|upper }}
+                    </span>
+
+                    <small>
+                        ₹{{ item.price }} × {{ item.quantity }}
+                    </small>
+
+                </div>
+
+                <strong>
+                    ₹{{ item.item_total }}
+                </strong>
+
+            </div>
+
+            {% endfor %}
+
+            <div class="order-total">
+                Total: ₹{{ total }}
+            </div>
+
+        </div>
+
+
+        <!-- DELIVERY DETAILS -->
+
+        <div class="checkout-form">
+
+            <h2>DELIVERY DETAILS</h2>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <label>Name</label>
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Your full name"
+                    autocomplete="name"
+                    required
+                >
+
+                <label>Phone</label>
+
+                <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Your phone number"
+                    autocomplete="tel"
+                    pattern="[0-9]{10}"
+                    maxlength="10"
+                    required
+                >
+
+                <label>Address</label>
+
+                <textarea
+                    name="address"
+                    placeholder="House name, street, place, district"
+                    autocomplete="street-address"
+                    required
+                ></textarea>
+
+                <label>Pincode</label>
+
+                <input
+                    type="text"
+                    name="pincode"
+                    placeholder="6 digit pincode"
+                    inputmode="numeric"
+                    pattern="[0-9]{6}"
+                    maxlength="6"
+                    required
+                >
+
+                <button type="submit" class="place-order">
+                    PLACE ORDER
+                </button>
+
+                <p class="checkout-note">
+                    Please check your delivery details before placing your order.
+                </p>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

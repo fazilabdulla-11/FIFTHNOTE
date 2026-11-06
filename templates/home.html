@@ -1,0 +1,451 @@
+{% extends 'base.html' %}
+
+{% block title %}
+FIFTH NOTE — Premium Fragrances
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    /* ================= HERO ================= */
+
+    .hero {
+        min-height: 430px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 70px 20px;
+        background:
+            linear-gradient(rgba(0,0,0,0.48), rgba(0,0,0,0.48)),
+            #222;
+        color: white;
+    }
+
+    .hero-small {
+        font-size: 11px;
+        letter-spacing: 5px;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        opacity: 0.8;
+    }
+
+    .hero h1 {
+        font-size: clamp(42px, 7vw, 82px);
+        letter-spacing: 14px;
+        font-weight: 500;
+        margin-left: 14px;
+    }
+
+    .hero p {
+        margin-top: 22px;
+        font-size: 15px;
+        letter-spacing: 2px;
+        color: #ddd;
+    }
+
+    .hero-line {
+        width: 55px;
+        height: 1px;
+        background: white;
+        margin-top: 30px;
+    }
+
+
+    /* ================= SEARCH ================= */
+
+    .search-area {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 45px 20px 15px;
+    }
+
+    .search-form {
+        max-width: 650px;
+        margin: auto;
+        display: flex;
+        border: 1px solid #d8d8d4;
+        background: white;
+    }
+
+    .search-form input {
+        flex: 1;
+        padding: 17px 20px;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 14px;
+        color: #111;
+    }
+
+    .search-form input::placeholder {
+        color: #999;
+    }
+
+    .search-form button {
+        background: #111;
+        color: white;
+        border: none;
+        padding: 0 30px;
+        cursor: pointer;
+        font-size: 11px;
+        letter-spacing: 2px;
+        transition: 0.3s;
+    }
+
+    .search-form button:hover {
+        background: #333;
+    }
+
+
+    /* ================= PRODUCT SECTION ================= */
+
+    .collection-heading {
+        max-width: 1200px;
+        margin: 55px auto 25px;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+    }
+
+    .collection-heading h2 {
+        font-size: 25px;
+        font-weight: 500;
+        letter-spacing: 3px;
+    }
+
+    .collection-heading span {
+        color: #888;
+        font-size: 12px;
+        letter-spacing: 1px;
+    }
+
+
+    .products {
+        max-width: 1200px;
+        margin: auto;
+        padding: 0 20px 40px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 28px;
+    }
+
+
+    /* ================= PRODUCT CARD ================= */
+
+    .product-card {
+        background: #fff;
+        border: 1px solid #e5e5e1;
+        overflow: hidden;
+        transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .product-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 45px rgba(0,0,0,0.10);
+    }
+
+    .product-card a {
+        text-decoration: none;
+        color: #111;
+    }
+
+
+    /* ================= PRODUCT IMAGE ================= */
+
+    .product-image {
+        width: 100%;
+        height: 400px;
+        background: #eeece7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .product-card:hover .product-image img {
+        transform: scale(1.06);
+    }
+
+
+    /* ================= PRODUCT INFO ================= */
+
+    .product-info {
+        padding: 25px 22px 27px;
+    }
+
+    .brand {
+        font-size: 10px;
+        letter-spacing: 3px;
+        color: #888;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+
+    .product-info h2 {
+        font-size: 19px;
+        font-weight: 500;
+        margin-bottom: 14px;
+    }
+
+    .price {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+
+    /* ================= EMPTY ================= */
+
+    .empty-products {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 80px 20px;
+        color: #777;
+    }
+
+
+    /* ================= MOBILE ================= */
+
+    @media (max-width: 800px) {
+
+    .hero {
+        min-height: 300px;
+        padding: 45px 20px;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+        letter-spacing: 6px;
+        margin-left: 6px;
+    }
+
+    .hero-small {
+        font-size: 9px;
+        letter-spacing: 3px;
+    }
+
+    .hero p {
+        font-size: 12px;
+        letter-spacing: 1px;
+    }
+
+    .search-area {
+        padding: 30px 18px 10px;
+    }
+
+    .search-form {
+        width: 100%;
+    }
+
+    .search-form input {
+        min-width: 0;
+        padding: 14px;
+    }
+
+    .search-form button {
+        padding: 0 18px;
+    }
+
+    .collection-heading {
+        margin: 35px auto 20px;
+        padding: 0 18px;
+    }
+
+    .collection-heading h2 {
+        font-size: 19px;
+        letter-spacing: 2px;
+    }
+
+    .products {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 0 12px 30px;
+    }
+
+    .product-image {
+        height: 250px;
+    }
+
+    .product-info {
+        padding: 15px 13px 18px;
+    }
+
+    .brand {
+        font-size: 9px;
+        letter-spacing: 2px;
+    }
+
+    .product-info h2 {
+        font-size: 15px;
+        margin-bottom: 9px;
+    }
+
+    .price {
+        font-size: 14px;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .hero {
+        min-height: 280px;
+    }
+
+    .hero h1 {
+        font-size: 30px;
+        letter-spacing: 5px;
+    }
+
+    .products {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .product-image {
+        height: 220px;
+    }
+
+    .product-info {
+        padding: 13px 11px 15px;
+    }
+
+    .product-info h2 {
+        font-size: 14px;
+    }
+
+}
+
+</style>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="hero-small">
+        The Art of Fragrance
+    </div>
+
+    <h1>FIFTH NOTE</h1>
+
+    <p>
+        Premium fragrances, made for you.
+    </p>
+
+    <div class="hero-line"></div>
+
+</section>
+
+
+<!-- ================= SEARCH ================= -->
+
+<div class="search-area">
+
+    <form method="GET" class="search-form">
+
+        <input
+            type="text"
+            name="q"
+            placeholder="Search fragrances..."
+            value="{{ query }}"
+        >
+
+        <button type="submit">
+            SEARCH
+        </button>
+
+    </form>
+
+</div>
+
+
+<!-- ================= COLLECTION TITLE ================= -->
+
+<div class="collection-heading">
+
+    <h2>OUR COLLECTION</h2>
+
+    <span>
+        {{ perfumes|length }} FRAGRANCES
+    </span>
+
+</div>
+
+
+<!-- ================= PRODUCTS ================= -->
+
+<section class="products">
+
+    {% if perfumes %}
+
+        {% for p in perfumes %}
+
+        <div class="product-card">
+
+            <a href="{% url 'myapp:detail' p.pk %}">
+
+                <div class="product-image">
+
+                    {% if p.image_url %}
+
+                        <img
+                            src="{{ p.image_url.url }}"
+                            alt="{{ p.name }}"
+                        >
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="product-info">
+
+                    <p class="brand">
+                        {{ p.brand }}
+                    </p>
+
+                    <h2>
+                        {{ p.name }}
+                    </h2>
+
+                    <p class="price">
+                        ₹{{ p.price }}
+                    </p>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty-products">
+
+            <p>
+                No fragrances found.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+
+{% endblock %}

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}FIFTH NOTE{% endblock %}</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f4f0;
+            color: #111;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            background: #0d0d0d;
+            color: white;
+            padding: 22px 5%;
+            border-bottom: 1px solid #292929;
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* LOGO */
+
+        .logo {
+            color: white;
+            text-decoration: none;
+            font-size: 25px;
+            font-weight: 600;
+            letter-spacing: 6px;
+        }
+
+        .logo span {
+            font-weight: 300;
+        }
+
+        /* NAVIGATION */
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            position: relative;
+            color: #fff;
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -7px;
+            width: 0;
+            height: 1px;
+            background: white;
+            transition: 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.75;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* ================= MAIN ================= */
+
+        main {
+            min-height: 80vh;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #0d0d0d;
+            color: white;
+            margin-top: 80px;
+            padding: 55px 5% 25px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 60px;
+            padding-bottom: 45px;
+        }
+
+        .footer-brand h2 {
+            font-size: 25px;
+            letter-spacing: 6px;
+            margin-bottom: 15px;
+        }
+
+        .footer-brand p {
+            color: #aaa;
+            max-width: 400px;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .footer-column h3 {
+            font-size: 12px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .footer-column a {
+            display: block;
+            color: #aaa;
+            text-decoration: none;
+            font-size: 13px;
+            margin-bottom: 12px;
+            transition: 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: auto;
+            padding-top: 25px;
+            border-top: 1px solid #292929;
+            text-align: center;
+            color: #777;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 20px;
+            }
+
+            .logo {
+                font-size: 20px;
+                letter-spacing: 4px;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .nav-links a {
+                font-size: 10px;
+                letter-spacing: 1px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 35px;
+            }
+
+            footer {
+                padding: 45px 25px 20px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <nav>
+
+            <a href="/" class="logo">
+                FIFTH NOTE
+            </a>
+
+            <div class="nav-links">
+
+                <a href="/">
+                    Home
+                </a>
+
+                <a href="/admin/">
+                    Admin
+                </a>
+                {% if user.is_authenticated %}
+
+    <span>Hi, {{ user.username }}</span>
+    <a href="{% url 'myapp:my_orders' %}"
+    style="color: white !important; display: inline-block 
+    !important;">My Orders</a>
+    <a href="{% url 'myapp:logout' %}">Logout</a>
+
+{% else %}
+
+    <a href="{% url 'myapp:login' %}">Login</a>
+    <a href="{% url 'myapp:signup' %}">Sign Up</a>
+
+{% endif %}
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ================= PAGE CONTENT ================= -->
+
+    <main>
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <div class="footer-content">
+
+            <div class="footer-brand">
+
+                <h2>FIFTH NOTE</h2>
+
+                <p>
+                    A refined collection of premium fragrances,
+                    created for those who appreciate elegance,
+                    character and individuality.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>EXPLORE</h3>
+
+                <a href="/">
+                    Home
+                </a>
+
+                <a href="/">
+                    Fragrances
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>INFORMATION</h3>
+
+                <a href="#">
+                    Contact
+                </a>
+
+                <a href="#">
+                    Privacy Policy
+                </a>
+
+                <a href="#">
+                    Terms & Conditions
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 FIFTH NOTE — PREMIUM FRAGRANCES
+
+        </div>
+
+    </footer>
+
+</body>
+
+</html>

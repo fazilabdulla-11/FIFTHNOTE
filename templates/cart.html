@@ -1,0 +1,304 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Your Cart — FIFTH NOTE
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .cart-page {
+        max-width: 1000px;
+        width: 100%;
+        margin: 60px auto;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .cart-page h1 {
+        font-size: 36px;
+        letter-spacing: 4px;
+        margin-bottom: 40px;
+    }
+
+    .cart-item {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+        padding: 20px 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .cart-item img {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+        background: #f1f1ef;
+        flex-shrink: 0;
+    }
+
+    .cart-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .cart-info h2 {
+        font-size: 20px;
+        margin-bottom: 8px;
+        overflow-wrap: anywhere;
+    }
+
+    .cart-info p {
+        color: #666;
+        margin: 5px 0;
+    }
+
+    .item-size {
+        display: inline-block;
+        background: #f1f1ef;
+        color: #111 !important;
+        padding: 5px 12px;
+        font-size: 12px;
+        margin: 8px 0 !important;
+        letter-spacing: 1px;
+    }
+
+    .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 12px 0;
+    }
+
+    .quantity-controls a {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #111;
+        color: white;
+        text-decoration: none;
+        font-size: 18px;
+    }
+
+    .quantity-controls span {
+        min-width: 25px;
+        text-align: center;
+    }
+
+    .remove-button {
+        display: inline-block;
+        color: #777;
+        font-size: 12px;
+        text-decoration: none;
+        letter-spacing: 1px;
+        margin-top: 8px;
+    }
+
+    .remove-button:hover {
+        color: #111;
+    }
+
+    .cart-total {
+        text-align: right;
+        margin-top: 40px;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .checkout-button {
+        display: inline-block;
+        background: #111;
+        color: white;
+        padding: 15px 35px;
+        text-decoration: none;
+        margin-top: 20px;
+        font-size: 13px;
+        letter-spacing: 1px;
+    }
+
+    .checkout-button:hover {
+        background: #333;
+    }
+
+    .empty-cart {
+        color: #666;
+        font-size: 18px;
+    }
+
+    @media (max-width: 700px) {
+        .cart-page {
+            margin: 35px auto;
+            padding: 15px;
+        }
+
+        .cart-page h1 {
+            font-size: 28px;
+            margin-bottom: 25px;
+        }
+
+        .cart-item {
+            gap: 15px;
+        }
+
+        .cart-item img {
+            width: 85px;
+            height: 85px;
+        }
+
+        .cart-info h2 {
+            font-size: 16px;
+        }
+
+        .cart-total {
+            font-size: 21px;
+        }
+    }
+
+    @media (max-width: 420px) {
+        .cart-page {
+            padding: 12px;
+            margin: 25px auto;
+        }
+
+        .cart-page h1 {
+            font-size: 24px;
+            letter-spacing: 3px;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 75px minmax(0, 1fr);
+            gap: 12px;
+            align-items: start;
+            padding: 18px 0;
+        }
+
+        .cart-item img {
+            width: 75px;
+            height: 90px;
+        }
+
+        .cart-info h2 {
+            font-size: 15px;
+        }
+
+        .cart-info p {
+            font-size: 13px;
+        }
+
+        .cart-item > strong {
+            grid-column: 2;
+            font-size: 15px;
+        }
+
+        .quantity-controls {
+            gap: 10px;
+        }
+
+        .quantity-controls a {
+            width: 29px;
+            height: 29px;
+        }
+
+        .cart-total {
+            margin-top: 28px;
+            font-size: 19px;
+        }
+
+        .checkout-button {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 16px;
+        }
+    }
+</style>
+
+<div class="cart-page">
+
+    <h1>YOUR CART</h1>
+
+    {% if perfumes %}
+
+        {% for item in perfumes %}
+
+        <div class="cart-item">
+
+            {% if item.size == '20ml' and item.perfume.image_20ml %}
+                <img
+                    src="{{ item.perfume.image_20ml.url }}"
+                    alt="{{ item.perfume.name }}"
+                >
+            {% elif item.perfume.image_url %}
+                <img
+                    src="{{ item.perfume.image_url.url }}"
+                    alt="{{ item.perfume.name }}"
+                >
+            {% endif %}
+
+            <div class="cart-info">
+
+                <h2>{{ item.perfume.name }}</h2>
+
+                <p>{{ item.perfume.brand }}</p>
+
+                <p class="item-size">
+                    {{ item.size|upper }}
+                </p>
+
+                <div class="quantity-controls">
+
+                    <a href="{% url 'myapp:decrease_cart' item.perfume.pk item.size %}">−</a>
+
+                    <span>{{ item.quantity }}</span>
+
+                    <a href="{% url 'myapp:increase_cart' item.perfume.pk item.size %}">+</a>
+
+                </div>
+
+                <p>
+                    ₹{{ item.price }} × {{ item.quantity }}
+                </p>
+
+                <a
+                    href="{% url 'myapp:remove_from_cart' item.perfume.pk item.size %}"
+                    class="remove-button"
+                >
+                    REMOVE
+                </a>
+
+            </div>
+
+            <strong>
+                ₹{{ item.item_total }}
+            </strong>
+
+        </div>
+
+        {% endfor %}
+
+        <div class="cart-total">
+
+            Total: ₹{{ total }}
+
+            <br>
+
+            <a href="{% url 'myapp:checkout' %}" class="checkout-button">
+                CHECKOUT
+            </a>
+
+        </div>
+
+    {% else %}
+
+        <p class="empty-cart">
+            Your cart is empty.
+        </p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

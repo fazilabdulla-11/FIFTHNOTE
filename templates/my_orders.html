@@ -1,0 +1,397 @@
+{% extends 'base.html' %}
+
+{% block title %}
+My Orders — FIFTH NOTE
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .orders-page {
+        max-width: 1000px;
+        margin: 60px auto;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .orders-page h1 {
+        font-size: 36px;
+        letter-spacing: 4px;
+        margin-bottom: 10px;
+    }
+
+    .orders-subtitle {
+        color: #777;
+        margin-bottom: 40px;
+    }
+
+    .order-card {
+        border: 1px solid #ddd;
+        margin-bottom: 30px;
+        padding: 25px;
+        background: white;
+    }
+
+    .order-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        flex-wrap: wrap;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .order-header h2 {
+        font-size: 18px;
+        margin-bottom: 8px;
+    }
+
+    .order-date {
+        color: #777;
+        font-size: 13px;
+    }
+
+    .order-total {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+
+    .order-status {
+    margin-top: 12px;
+}
+
+.status-label {
+    color: #777;
+    font-size: 11px;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 7px;
+}
+
+.status-value {
+    display: inline-block;
+    padding: 7px 13px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-confirmed {
+    background: #e7f1ff;
+    color: #084298;
+}
+
+.status-shipped {
+    background: #e8eaf6;
+    color: #283593;
+}
+
+.status-delivered {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.status-cancelled {
+    background: #f8d7da;
+    color: #842029;
+}
+
+    .order-products {
+        padding: 20px 0;
+    }
+
+    .order-product {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 12px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .product-name {
+        font-weight: bold;
+        overflow-wrap: anywhere;
+    }
+
+    .product-details {
+        color: #777;
+        font-size: 13px;
+        margin-top: 7px;
+        line-height: 1.7;
+    }
+
+    .product-size {
+        display: inline-block;
+        background: #f1f1ef;
+        color: #111;
+        padding: 5px 10px;
+        font-size: 11px;
+        letter-spacing: 1px;
+        margin-top: 7px;
+    }
+
+    .product-price {
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    .delivery-details {
+        background: #f8f8f7;
+        padding: 18px;
+        margin-top: 10px;
+    }
+
+    .delivery-details h3 {
+        font-size: 14px;
+        letter-spacing: 1px;
+        margin-bottom: 12px;
+    }
+
+    .delivery-details p {
+        color: #666;
+        font-size: 13px;
+        line-height: 1.8;
+        margin: 3px 0;
+        overflow-wrap: anywhere;
+    }
+
+    .empty-orders {
+        text-align: center;
+        padding: 70px 20px;
+        border: 1px solid #ddd;
+    }
+
+    .empty-orders h2 {
+        font-size: 23px;
+        margin-bottom: 12px;
+    }
+
+    .empty-orders p {
+        color: #777;
+        margin-bottom: 25px;
+    }
+
+    .shop-button {
+        display: inline-block;
+        background: #111;
+        color: white;
+        padding: 14px 30px;
+        text-decoration: none;
+        font-size: 12px;
+        letter-spacing: 1px;
+    }
+
+    .shop-button:hover {
+        background: #333;
+    }
+
+    @media (max-width: 600px) {
+        .orders-page {
+            margin: 30px auto;
+            padding: 15px;
+        }
+
+        .orders-page h1 {
+            font-size: 27px;
+        }
+
+        .orders-subtitle {
+            margin-bottom: 25px;
+        }
+
+        .order-card {
+            padding: 17px;
+        }
+
+        .order-header h2 {
+            font-size: 16px;
+        }
+
+        .order-total {
+            font-size: 18px;
+        }
+
+        .order-product {
+            gap: 10px;
+        }
+
+        .product-name {
+            font-size: 14px;
+        }
+
+        .product-price {
+            font-size: 14px;
+        }
+    }
+    .cancel-button {
+    margin-top: 12px;
+    padding: 10px 18px;
+    background: white;
+    color: #b42318;
+    border: 1px solid #b42318;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+.cancel-button:hover {
+    background: #b42318;
+    color: white;
+}
+</style>
+
+
+<div class="orders-page">
+
+    <h1>MY ORDERS</h1>
+
+    <p class="orders-subtitle">
+        Your FIFTH NOTE purchase history
+    </p>
+
+
+    {% if orders %}
+
+        {% for order in orders %}
+
+        <div class="order-card">
+
+            <!-- ORDER HEADER -->
+
+            <div class="order-header">
+
+                <div>
+
+                    <h2>
+                        ORDER #{{ order.id }}
+                    </h2>
+
+                    <p class="order-date">
+                        {{ order.created_at|date:"d M Y, h:i A" }}
+                    </p>
+
+                </div>
+
+                <div class="order-total">
+                    ₹{{ order.total }}
+                </div>
+
+                <div class="order-status">
+
+    <span class="status-label">ORDER STATUS</span>
+
+    <span class="status-value status-{{ order.status|lower }}">
+        {{ order.get_status_display }}
+    </span>
+
+    {% if order.status == 'Pending' %}
+
+        <form method="POST"
+              action="{% url 'myapp:cancel_order' order.id %}"
+              onsubmit="return confirm('Are you sure you want to cancel this order?');">
+
+            {% csrf_token %}
+
+            <button type="submit" class="cancel-button">
+                CANCEL ORDER
+            </button>
+
+        </form>
+
+    {% endif %}
+
+</div>
+
+            </div>
+
+
+            <!-- ORDER PRODUCTS -->
+
+            <div class="order-products">
+
+                {% for item in order.items.all %}
+
+                <div class="order-product">
+
+                    <div>
+
+                        <div class="product-name">
+                            {{ item.perfume.name }}
+                        </div>
+
+                        <span class="product-size">
+                            {{ item.size|upper }}
+                        </span>
+
+                        <p class="product-details">
+                            ₹{{ item.price }} × {{ item.quantity }}
+                        </p>
+
+                    </div>
+
+                    <div class="product-price">
+                        ₹{% widthratio item.price 1 item.quantity %}
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- DELIVERY DETAILS -->
+
+            <div class="delivery-details">
+
+                <h3>DELIVERY DETAILS</h3>
+
+                <p>
+                    <strong>Name:</strong> {{ order.name }}
+                </p>
+
+                <p>
+                    <strong>Phone:</strong> {{ order.phone }}
+                </p>
+
+                <p>
+                    <strong>Address:</strong> {{ order.address }}
+                </p>
+
+                <p>
+                    <strong>Pincode:</strong> {{ order.pincode }}
+                </p>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty-orders">
+
+            <h2>No Orders Yet</h2>
+
+            <p>
+                You haven't placed any orders yet.
+            </p>
+
+            <a href="{% url 'myapp:home' %}" class="shop-button">
+                START SHOPPING
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
