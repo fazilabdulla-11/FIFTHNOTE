@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 
 ALLOWED_HOSTS = ['https://fifthnote.onrender.com/',
-    '127.0.0.1,localhost',]
+    '127.0.0.1,localhost','fifthnote.onrender.com']
     
 
 
